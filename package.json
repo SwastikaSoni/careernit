@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "@types/cookie": "^1.0.0"
+  }
+}
