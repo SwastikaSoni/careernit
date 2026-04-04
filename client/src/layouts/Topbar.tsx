@@ -94,8 +94,10 @@ const Topbar = ({ onMobileMenuToggle }: TopbarProps) => {
         left: isMobile ? 0 : DRAWER_WIDTH,
         right: 0,
         height: 64,
-        background: '#FFFFFF',
-        borderBottom: '1px solid #F0F0F0',
+        background: 'rgba(255, 255, 255, 0.55)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
+        borderBottom: '1px solid rgba(92,107,192,0.08)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -116,15 +118,22 @@ const Topbar = ({ onMobileMenuToggle }: TopbarProps) => {
             sx={{
               display: 'flex',
               alignItems: 'center',
-              background: '#F4F6FA',
+              background: 'rgba(92,107,192,0.06)',
+              border: '1px solid rgba(92,107,192,0.08)',
               borderRadius: '14px',
               px: 2,
               py: 0.5,
               width: { sm: 250, md: 350 },
               maxWidth: '100%',
+              transition: 'all 0.3s',
+              '&:focus-within': {
+                background: 'rgba(92,107,192,0.1)',
+                border: '1px solid rgba(92,107,192,0.2)',
+                boxShadow: '0 2px 12px rgba(92,107,192,0.1)',
+              },
             }}
           >
-            <SearchIcon sx={{ color: '#999', fontSize: 20, mr: 1 }} />
+            <SearchIcon sx={{ color: '#9FA8DA', fontSize: 20, mr: 1 }} />
             <InputBase
               placeholder="Search..."
               sx={{ flex: 1, fontSize: '0.9rem', color: '#333' }}
@@ -165,7 +174,7 @@ const Topbar = ({ onMobileMenuToggle }: TopbarProps) => {
             borderRadius: '12px',
             px: 1,
             py: 0.5,
-            '&:hover': { background: '#F4F6FA' },
+            '&:hover': { background: 'rgba(92,107,192,0.06)' },
             transition: 'background 0.2s',
           }}
         >
@@ -176,6 +185,8 @@ const Topbar = ({ onMobileMenuToggle }: TopbarProps) => {
               background: 'linear-gradient(135deg, #5C6BC0, #7E57C2)',
               fontSize: '0.85rem',
               fontWeight: 700,
+              border: '2px solid rgba(255,255,255,0.8)',
+              boxShadow: '0 2px 8px rgba(92,107,192,0.3)',
             }}
           >
             {user?.name?.charAt(0).toUpperCase()}
@@ -193,10 +204,13 @@ const Topbar = ({ onMobileMenuToggle }: TopbarProps) => {
           onClose={() => setAnchorEl(null)}
           PaperProps={{
             sx: {
-              borderRadius: '12px',
-              boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+              borderRadius: '14px',
+              boxShadow: '0 8px 32px rgba(92,107,192,0.15)',
               mt: 1,
               minWidth: 180,
+              background: 'rgba(255,255,255,0.9)',
+              backdropFilter: 'blur(20px)',
+              border: '1px solid rgba(92,107,192,0.1)',
             },
           }}
         >
@@ -206,11 +220,11 @@ const Topbar = ({ onMobileMenuToggle }: TopbarProps) => {
               navigate(user?.role === 'student' ? '/dashboard/my-profile' : '/dashboard/profile');
             }}
           >
-            <ListItemIcon><PersonIcon fontSize="small" /></ListItemIcon>
+            <ListItemIcon><PersonIcon fontSize="small" sx={{ color: '#5C6BC0' }} /></ListItemIcon>
             Profile
           </MenuItem>
           <MenuItem onClick={handleLogout}>
-            <ListItemIcon><LogoutIcon fontSize="small" /></ListItemIcon>
+            <ListItemIcon><LogoutIcon fontSize="small" sx={{ color: '#EF5350' }} /></ListItemIcon>
             Logout
           </MenuItem>
         </Menu>
@@ -221,16 +235,19 @@ const Topbar = ({ onMobileMenuToggle }: TopbarProps) => {
           onClose={() => setNotificationAnchor(null)}
           PaperProps={{
             sx: {
-              borderRadius: '12px',
-              boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+              borderRadius: '14px',
+              boxShadow: '0 8px 32px rgba(92,107,192,0.15)',
               mt: 1,
               width: 320,
               maxHeight: 400,
+              background: 'rgba(255,255,255,0.92)',
+              backdropFilter: 'blur(20px)',
+              border: '1px solid rgba(92,107,192,0.1)',
             },
           }}
         >
-          <Box sx={{ p: 2, borderBottom: '1px solid #F0F0F0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#333' }}>Notifications</Typography>
+          <Box sx={{ p: 2, borderBottom: '1px solid rgba(92,107,192,0.08)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Typography variant="subtitle1" sx={{ fontWeight: 700, color: '#1A1A2E' }}>Notifications</Typography>
             {unreadCount > 0 && <Chip label={`${unreadCount} New`} size="small" color="error" sx={{ height: 20, fontSize: '0.7rem', fontWeight: 600 }} />}
           </Box>
           {recentNotifications.length === 0 ? (
@@ -245,8 +262,8 @@ const Topbar = ({ onMobileMenuToggle }: TopbarProps) => {
                 sx={{
                   py: 1.5,
                   px: 2,
-                  borderBottom: '1px solid #F8F8F8',
-                  background: n.isRead ? 'transparent' : '#F4F6FA',
+                  borderBottom: '1px solid rgba(92,107,192,0.05)',
+                  background: n.isRead ? 'transparent' : 'rgba(92,107,192,0.05)',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'flex-start',
@@ -262,10 +279,10 @@ const Topbar = ({ onMobileMenuToggle }: TopbarProps) => {
               </MenuItem>
             ))
           )}
-          <Box sx={{ p: 1, borderTop: '1px solid #F0F0F0', textAlign: 'center' }}>
+          <Box sx={{ p: 1, borderTop: '1px solid rgba(92,107,192,0.08)', textAlign: 'center' }}>
             <Typography
               variant="body2"
-              sx={{ color: '#5C6BC0', fontWeight: 600, cursor: 'pointer', p: 1, '&:hover': { background: '#F4F6FA', borderRadius: '8px' } }}
+              sx={{ color: '#5C6BC0', fontWeight: 600, cursor: 'pointer', p: 1, '&:hover': { background: 'rgba(92,107,192,0.06)', borderRadius: '8px' } }}
               onClick={() => { setNotificationAnchor(null); navigate('/dashboard/notifications'); }}
             >
               View All Notifications

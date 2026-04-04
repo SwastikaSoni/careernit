@@ -28,7 +28,7 @@ const DashboardHome = () => {
   if (loading) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
-        <CircularProgress sx={{ color: '#5C6BC0' }} />
+        <CircularProgress sx={{ color: '#B39DDB' }} />
       </Box>
     );
   }

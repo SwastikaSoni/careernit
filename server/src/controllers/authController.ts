@@ -9,6 +9,11 @@ export const register = async (req: AuthRequest, res: Response, next: NextFuncti
   try {
     const { name, email, password, phone } = req.body;
 
+    // Domain restriction for students
+    if (!email.toLowerCase().endsWith('@student.nitw.ac.in')) {
+      throw createError(400, 'Students must register with a @student.nitw.ac.in email address.');
+    }
+
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       throw createError(400, 'Email already registered.');
@@ -61,6 +66,11 @@ export const login = async (req: AuthRequest, res: Response, next: NextFunction)
 
     if (!user.isActive) {
       throw createError(403, 'Your account has been deactivated. Contact admin.');
+    }
+
+    // Domain restriction for students on login
+    if (user.role === Role.STUDENT && !email.toLowerCase().endsWith('@student.nitw.ac.in')) {
+      throw createError(403, 'Access denied. Students must use their @student.nitw.ac.in account.');
     }
 
     const isMatch = await user.comparePassword(password);

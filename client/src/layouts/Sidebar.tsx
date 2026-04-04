@@ -172,20 +172,27 @@ const SidebarContent = ({ onItemClick }: { onItemClick?: () => void }) => {
     <Box
       sx={{
         height: '100%',
-        background: 'linear-gradient(180deg, #3A3F7A 0%, #2B2D5E 100%)',
+        background: 'linear-gradient(180deg, #3A3F7A 0%, #2B2D5E 50%, #1f1f45 100%)',
         color: '#FFFFFF',
         display: 'flex',
         flexDirection: 'column',
         overflowY: 'auto',
         overflowX: 'hidden',
         '&::-webkit-scrollbar': { width: '4px' },
-        '&::-webkit-scrollbar-thumb': { background: 'rgba(255,255,255,0.2)', borderRadius: '4px' },
+        '&::-webkit-scrollbar-thumb': { background: 'rgba(255,255,255,0.15)', borderRadius: '4px' },
       }}
     >
       {/* Logo */}
       <Box sx={{ px: 3, py: 2.5, display: 'flex', alignItems: 'center', gap: 1.5 }}>
-        <SchoolIcon sx={{ fontSize: 32, color: '#B39DDB' }} />
-        <Typography variant="h6" sx={{ fontWeight: 800, letterSpacing: 1 }}>
+        <Box sx={{
+          width: 38, height: 38, borderRadius: '10px',
+          background: 'linear-gradient(135deg, #7E57C2, #5C6BC0)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          boxShadow: '0 4px 15px rgba(126,87,194,0.4)',
+        }}>
+          <SchoolIcon sx={{ fontSize: 22, color: '#fff' }} />
+        </Box>
+        <Typography variant="h6" sx={{ fontWeight: 800, letterSpacing: 0.5, fontSize: '1.15rem' }}>
           CareerNIT
         </Typography>
       </Box>
@@ -199,7 +206,7 @@ const SidebarContent = ({ onItemClick }: { onItemClick?: () => void }) => {
             <Typography
               variant="caption"
               sx={{
-                color: 'rgba(255,255,255,0.4)',
+                color: 'rgba(255,255,255,0.35)',
                 fontWeight: 700,
                 letterSpacing: 1.5,
                 px: 1.5,
@@ -221,10 +228,15 @@ const SidebarContent = ({ onItemClick }: { onItemClick?: () => void }) => {
                     py: 1,
                     px: 1.5,
                     color: isActive(item.path) ? '#FFFFFF' : 'rgba(255,255,255,0.6)',
-                    background: isActive(item.path) ? 'rgba(255,255,255,0.12)' : 'transparent',
+                    background: isActive(item.path)
+                      ? 'linear-gradient(135deg, rgba(126,87,194,0.3), rgba(92,107,192,0.25))'
+                      : 'transparent',
                     backdropFilter: isActive(item.path) ? 'blur(10px)' : 'none',
+                    border: isActive(item.path) ? '1px solid rgba(179,157,219,0.2)' : '1px solid transparent',
                     '&:hover': {
-                      background: isActive(item.path) ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.06)',
+                      background: isActive(item.path)
+                        ? 'linear-gradient(135deg, rgba(126,87,194,0.35), rgba(92,107,192,0.3))'
+                        : 'rgba(255,255,255,0.06)',
                       color: '#FFFFFF',
                     },
                     transition: 'all 0.2s ease',
@@ -232,7 +244,7 @@ const SidebarContent = ({ onItemClick }: { onItemClick?: () => void }) => {
                 >
                   <ListItemIcon
                     sx={{
-                      color: isActive(item.path) ? '#B39DDB' : 'rgba(255,255,255,0.5)',
+                      color: isActive(item.path) ? '#B39DDB' : 'rgba(255,255,255,0.45)',
                       minWidth: 38,
                       '& .MuiSvgIcon-root': { fontSize: 20 },
                     }}
@@ -262,6 +274,7 @@ const SidebarContent = ({ onItemClick }: { onItemClick?: () => void }) => {
           borderRadius: '14px',
           background: 'rgba(255,255,255,0.06)',
           backdropFilter: 'blur(10px)',
+          border: '1px solid rgba(255,255,255,0.08)',
           display: 'flex',
           alignItems: 'center',
           gap: 1.5,
