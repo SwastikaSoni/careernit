@@ -160,7 +160,7 @@ const OfficersPage = () => {
           <TableContainer>
             <Table>
               <TableHead>
-                <TableRow sx={{ background: '#F8F9FC' }}>
+                <TableRow>
                   <TableCell sx={{ fontWeight: 700, color: '#555' }}>Name</TableCell>
                   <TableCell sx={{ fontWeight: 700, color: '#555', display: { xs: 'none', sm: 'table-cell' } }}>Email</TableCell>
                   <TableCell sx={{ fontWeight: 700, color: '#555', display: { xs: 'none', md: 'table-cell' } }}>Department</TableCell>
@@ -170,7 +170,7 @@ const OfficersPage = () => {
               </TableHead>
               <TableBody>
                 {filtered.map((o) => (
-                  <TableRow key={o._id} sx={{ '&:hover': { background: '#FAFAFF' }, transition: 'background 0.2s' }}>
+                  <TableRow key={o._id}>
                     <TableCell>
                       <Typography variant="body2" sx={{ fontWeight: 600 }}>{o.name}</Typography>
                       <Typography variant="caption" sx={{ color: '#999', display: { sm: 'none' } }}>{o.email}</Typography>

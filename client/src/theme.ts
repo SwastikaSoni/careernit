@@ -69,11 +69,17 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 18,
-          boxShadow: '0 2px 12px rgba(0,0,0,0.06)',
-          transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+          background: 'rgba(255, 255, 255, 0.45)', // Glassy effect
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          border: '1px solid rgba(255, 255, 255, 0.5)',
+          boxShadow: '0 4px 20px rgba(92, 107, 192, 0.08)',
+          transition: 'all 0.3s ease',
           '&:hover': {
             transform: 'translateY(-3px)',
-            boxShadow: '0 8px 25px rgba(0,0,0,0.1)',
+            boxShadow: '0 12px 30px rgba(92, 107, 192, 0.15)',
+            background: 'rgba(255, 255, 255, 0.65)',
+            border: '1px solid rgba(255, 255, 255, 0.8)',
           },
         },
       },
@@ -83,14 +89,53 @@ const theme = createTheme({
         root: {
           '& .MuiOutlinedInput-root': {
             borderRadius: 12,
+            background: 'rgba(255, 255, 255, 0.4)',
+            backdropFilter: 'blur(8px)',
+            transition: 'all 0.3s ease',
+            '& fieldset': {
+              borderColor: 'rgba(255, 255, 255, 0.6)',
+            },
+            '&:hover fieldset': {
+              borderColor: 'rgba(92, 107, 192, 0.4)',
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: '#5C6BC0',
+            },
+            '&.Mui-focused': {
+              background: 'rgba(255, 255, 255, 0.8)',
+              boxShadow: '0 4px 15px rgba(92, 107, 192, 0.1)',
+            }
           },
         },
       },
+    },
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          borderBottom: '1px solid rgba(255, 255, 255, 0.3)',
+        },
+        head: {
+          background: 'rgba(255, 255, 255, 0.2) !important', // Semi-transparent header
+          backdropFilter: 'blur(10px)',
+        }
+      }
+    },
+    MuiTableRow: {
+      styleOverrides: {
+        root: {
+          '&:hover': {
+            background: 'rgba(255, 255, 255, 0.4) !important',
+          }
+        }
+      }
     },
     MuiDialog: {
       styleOverrides: {
         paper: {
           borderRadius: 16,
+          background: 'rgba(255, 255, 255, 0.85)', // Slight glass on dialogs too
+          backdropFilter: 'blur(20px)',
+          border: '1px solid rgba(255, 255, 255, 0.6)',
         },
       },
     },

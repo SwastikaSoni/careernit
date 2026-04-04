@@ -201,7 +201,7 @@ const VerificationPage = () => {
           <TableContainer>
             <Table>
               <TableHead>
-                <TableRow sx={{ background: '#F8F9FC' }}>
+                <TableRow>
                   <TableCell sx={{ fontWeight: 700, color: '#555' }}>Name</TableCell>
                   <TableCell sx={{ fontWeight: 700, color: '#555', display: { xs: 'none', sm: 'table-cell' } }}>Roll No</TableCell>
                   <TableCell sx={{ fontWeight: 700, color: '#555', display: { xs: 'none', md: 'table-cell' } }}>Department</TableCell>

@@ -32,7 +32,12 @@ const WelcomeBanner = ({ name, role, subtitle }: WelcomeBannerProps) => {
         position: 'relative',
         overflow: 'hidden',
         boxShadow: '0 8px 32px rgba(92,107,192,0.3)',
-        '&:hover': { transform: 'none', boxShadow: '0 10px 40px rgba(92,107,192,0.35)' },
+        '&:hover': { 
+          transform: 'none', 
+          boxShadow: '0 10px 40px rgba(92,107,192,0.35)',
+          background: 'linear-gradient(135deg, #5C6BC0 0%, #7E57C2 40%, #AB47BC 100%)',
+          border: 'none'
+        },
       }}
     >
       {/* Decorative gradient orbs */}

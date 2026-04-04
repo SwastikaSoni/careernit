@@ -131,7 +131,7 @@ const AdminStudentsPage = () => {
                     <TableContainer>
                         <Table>
                             <TableHead>
-                                <TableRow sx={{ background: '#F8F9FC' }}>
+                                <TableRow>
                                     <TableCell sx={{ fontWeight: 700, color: '#555' }}>Name & Roll Number</TableCell>
                                     <TableCell sx={{ fontWeight: 700, color: '#555', display: { xs: 'none', sm: 'table-cell' } }}>Email</TableCell>
                                     <TableCell sx={{ fontWeight: 700, color: '#555', display: { xs: 'none', md: 'table-cell' } }}>Department</TableCell>

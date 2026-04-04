@@ -220,7 +220,7 @@ const DepartmentList = () => {
           <TableContainer>
             <Table>
               <TableHead>
-                <TableRow sx={{ background: '#F8F9FC' }}>
+                <TableRow>
                   <TableCell sx={{ fontWeight: 700, color: '#555' }}>Name</TableCell>
                   <TableCell sx={{ fontWeight: 700, color: '#555' }}>Code</TableCell>
                   <TableCell sx={{ fontWeight: 700, color: '#555', display: { xs: 'none', md: 'table-cell' } }}>
