@@ -8,6 +8,7 @@ import {
   getAllStudents,
   getStudentById,
   verifyStudent,
+  blockStudent,
 } from '../controllers/profileController';
 import { authenticate, authorize } from '../middlewares/auth';
 import validate from '../middlewares/validate';
@@ -45,8 +46,9 @@ router.put('/me', authenticate, validate(updateProfileSchema), updateMyProfile);
 router.post('/resume', authenticate, authorize(Role.STUDENT), upload.single('resume'), uploadResume);
 
 // Admin routes
-router.get('/students', authenticate, authorize(Role.ADMIN), getAllStudents);
-router.get('/students/:id', authenticate, authorize(Role.ADMIN), getStudentById);
+router.get('/students', authenticate, authorize(Role.ADMIN, Role.PLACEMENT_OFFICER), getAllStudents);
+router.get('/students/:id', authenticate, authorize(Role.ADMIN, Role.PLACEMENT_OFFICER), getStudentById);
 router.put('/students/:id/verify', authenticate, authorize(Role.ADMIN), validate(verifyStudentSchema), verifyStudent);
+router.put('/students/:id/block', authenticate, authorize(Role.ADMIN), blockStudent);
 
 export default router;

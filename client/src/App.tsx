@@ -13,6 +13,7 @@ import Placeholder from './pages/Placeholder';
 import DepartmentList from './pages/departments/DepartmentList';
 import StudentProfilePage from './pages/profile/StudentProfilePage';
 import VerificationPage from './pages/verification/VerificationPage';
+import AdminStudentsPage from './pages/dashboards/AdminStudentsPage';
 import OfficersPage from './pages/officers/OfficersPage';
 import CompaniesPage from './pages/companies/CompaniesPage';
 import DrivesPage from './pages/drives/DrivesPage';
@@ -34,6 +35,7 @@ import NotificationsPage from './pages/notifications/NotificationsPage';
 import AnalyticsDashboard from './pages/dashboards/AnalyticsDashboard';
 import UserProfilePage from './pages/profile/UserProfilePage';
 import ReportsPage from './pages/reports/ReportsPage';
+import OffersPage from './pages/offers/OffersPage';
 import { useAuth } from './context/AuthContext';
 
 const DrivesRouter = () => {
@@ -92,7 +94,7 @@ const App = () => {
 
                   {/* Admin Routes */}
                   <Route path="verification" element={<ProtectedRoute roles={['admin']}><VerificationPage /></ProtectedRoute>} />
-                  <Route path="students" element={<ProtectedRoute roles={['admin']}><Placeholder /></ProtectedRoute>} />
+                  <Route path="students" element={<ProtectedRoute roles={['admin']}><AdminStudentsPage /></ProtectedRoute>} />
                   <Route path="officers" element={<ProtectedRoute roles={['admin']}><OfficersPage /></ProtectedRoute>} />
                   <Route path="departments" element={<ProtectedRoute roles={['admin']}><DepartmentList /></ProtectedRoute>} />
                   <Route path="analytics" element={<ProtectedRoute roles={['admin']}><AnalyticsDashboard /></ProtectedRoute>} />
@@ -109,7 +111,7 @@ const App = () => {
                   {/* Shared — role-specific rendering */}
                   <Route path="drives" element={<DrivesRouter />} />
                   <Route path="interviews" element={<InterviewsRouter />} />
-                  <Route path="offers" element={<Placeholder />} />
+                  <Route path="offers" element={<OffersPage />} />
                   <Route path="questions" element={<QuestionsRouter />} />
                   <Route path="resources" element={<ResourcesRouter />} />
                   <Route path="mock-tests" element={<MockTestsRouter />} />

@@ -6,9 +6,9 @@ import {
     DialogContent, DialogActions, Avatar,
 } from '@mui/material';
 import {
-    Search as SearchIcon, CheckCircle as SelectIcon, ThumbUp as ShortlistIcon,
+    Search as SearchIcon, ThumbUp as ShortlistIcon,
     ThumbDown as RejectIcon, Undo as UndoIcon, Work as WorkIcon,
-    People as PeopleIcon, HowToReg as SelectedIcon, DoNotDisturb as RejectedIcon,
+    People as PeopleIcon, DoNotDisturb as RejectedIcon,
     Download as DownloadIcon,
 } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
@@ -27,10 +27,10 @@ interface Application {
 interface Counts { total: number; applied: number; shortlisted: number; rejected: number; selected: number; }
 
 const statusColors: Record<string, string> = {
-    applied: '#1565C0', shortlisted: '#ED6C02', rejected: '#D32F2F', selected: '#2E7D32',
+    applied: '#1565C0', shortlisted: '#ED6C02', rejected: '#D32F2F',
 };
 const statusBg: Record<string, string> = {
-    applied: '#E3F2FD', shortlisted: '#FFF3E0', rejected: '#FFEBEE', selected: '#E8F5E9',
+    applied: '#E3F2FD', shortlisted: '#FFF3E0', rejected: '#FFEBEE',
 };
 
 const ApplicationsPage = () => {
@@ -148,7 +148,6 @@ const ApplicationsPage = () => {
                     { label: 'Total', value: counts.total, color: '#5C6BC0', icon: <PeopleIcon /> },
                     { label: 'Applied', value: counts.applied, color: '#1565C0', icon: <WorkIcon /> },
                     { label: 'Shortlisted', value: counts.shortlisted, color: '#ED6C02', icon: <ShortlistIcon /> },
-                    { label: 'Selected', value: counts.selected, color: '#2E7D32', icon: <SelectedIcon /> },
                     { label: 'Rejected', value: counts.rejected, color: '#D32F2F', icon: <RejectedIcon /> },
                 ].map((s) => (
                     <Grid key={s.label} size={{ xs: 6, sm: 4, md: 2.4 }}>
@@ -178,7 +177,6 @@ const ApplicationsPage = () => {
                             <MenuItem value="applied">Applied</MenuItem>
                             <MenuItem value="shortlisted">Shortlisted</MenuItem>
                             <MenuItem value="rejected">Rejected</MenuItem>
-                            <MenuItem value="selected">Selected</MenuItem>
                         </Select>
                     </FormControl>
                     <TextField sx={{ flex: 1, minWidth: 200 }} placeholder="Search by name, roll number, or email..."
@@ -255,12 +253,6 @@ const ApplicationsPage = () => {
                                                         sx={{ color: '#ED6C02' }}><ShortlistIcon fontSize="small" /></IconButton>
                                                 </Tooltip>
                                             )}
-                                            {app.status !== 'selected' && (
-                                                <Tooltip title="Select">
-                                                    <IconButton size="small" onClick={() => openConfirm(app._id, 'selected', app.student?.name)}
-                                                        sx={{ color: '#2E7D32' }}><SelectIcon fontSize="small" /></IconButton>
-                                                </Tooltip>
-                                            )}
                                             {app.status !== 'rejected' && (
                                                 <Tooltip title="Reject">
                                                     <IconButton size="small" onClick={() => openConfirm(app._id, 'rejected', app.student?.name)}
@@ -302,15 +294,11 @@ const ApplicationsPage = () => {
                         sx={{
                             background: confirmDialog.action === 'rejected'
                                 ? 'linear-gradient(135deg, #EF5350, #C62828)'
-                                : confirmDialog.action === 'selected'
-                                    ? 'linear-gradient(135deg, #43A047, #2E7D32)'
-                                    : 'linear-gradient(135deg, #5C6BC0, #7E57C2)',
+                                : 'linear-gradient(135deg, #5C6BC0, #7E57C2)',
                             '&:hover': {
                                 background: confirmDialog.action === 'rejected'
                                     ? 'linear-gradient(135deg, #C62828, #B71C1C)'
-                                    : confirmDialog.action === 'selected'
-                                        ? 'linear-gradient(135deg, #2E7D32, #1B5E20)'
-                                        : 'linear-gradient(135deg, #7E57C2, #9575CD)',
+                                    : 'linear-gradient(135deg, #7E57C2, #9575CD)',
                             },
                         }}>
                         {updating ? <CircularProgress size={22} sx={{ color: '#fff' }} /> : 'Confirm'}

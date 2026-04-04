@@ -18,6 +18,7 @@ import resourceRoutes from './routes/resourceRoutes';
 import mockTestRoutes from './routes/mockTestRoutes';
 import announcementRoutes from './routes/announcementRoutes';
 import notificationRoutes from './routes/notificationRoutes';
+import offerRoutes from './routes/offerRoutes';
 import errorHandler from './middlewares/errorHandler';
 
 dotenv.config();
@@ -49,6 +50,7 @@ app.use('/api/resources', resourceRoutes);
 app.use('/api/mock-tests', mockTestRoutes);
 app.use('/api/announcements', announcementRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/offers', offerRoutes);
 app.use(errorHandler);
 
 export default app;

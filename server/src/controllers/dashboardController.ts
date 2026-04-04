@@ -14,7 +14,8 @@ export const getDashboardStats = async (req: AuthRequest, res: Response, next: N
     const Drive = require('../models/Drive').default;
     const Application = require('../models/Application').default;
     const Interview = require('../models/Interview').default;
-    // Offer model might not exist yet, defaulting to 0 for now.
+    const Offer = require('../models/Offer').default;
+    const TestAttempt = require('../models/TestAttempt').default;
 
     if (user.role === Role.ADMIN || user.role === Role.PLACEMENT_OFFICER) {
       // Common officer/admin stats
@@ -25,6 +26,7 @@ export const getDashboardStats = async (req: AuthRequest, res: Response, next: N
       const activeDrives = await Drive.countDocuments({ status: { $in: ['active', 'ongoing'] } });
       const totalApplications = await Application.countDocuments();
       const upcomingInterviews = await Interview.countDocuments({ status: 'scheduled' });
+      const pendingOffers = await Offer.countDocuments({ status: 'pending' });
 
       // Chart Data: Placement Ratio
       const placementStats = [
@@ -72,6 +74,8 @@ export const getDashboardStats = async (req: AuthRequest, res: Response, next: N
             totalDrives,
             activeDrives,
             totalApplications,
+            pendingOffers,
+            upcomingInterviews,
             placementRate: totalStudents > 0 ? Math.round((placedStudents / totalStudents) * 100) : 0,
             placementStats,
             driveStats
@@ -86,7 +90,7 @@ export const getDashboardStats = async (req: AuthRequest, res: Response, next: N
             activeDrives,
             totalApplications,
             upcomingInterviews,
-            pendingOffers: 0,
+            pendingOffers,
             totalStudents,
             placedStudents,
             placementRate: totalStudents > 0 ? Math.round((placedStudents / totalStudents) * 100) : 0,
@@ -101,6 +105,9 @@ export const getDashboardStats = async (req: AuthRequest, res: Response, next: N
       const myApplications = await Application.countDocuments({ student: user._id });
       const upcomingInterviews = await Interview.countDocuments({ student: user._id, status: 'scheduled' });
       const eligibleDrives = await Drive.countDocuments({ status: { $in: ['active', 'ongoing'] } }); // Simplified
+
+      const offersReceived = await Offer.countDocuments({ student: user._id });
+      const mockTestsTaken = await TestAttempt.countDocuments({ student: user._id });
 
       // Chart Data: Applications status
       const apps = await Application.find({ student: user._id });
@@ -123,8 +130,8 @@ export const getDashboardStats = async (req: AuthRequest, res: Response, next: N
           placementStatus: student?.placementStatus || 'unplaced',
           myApplications,
           upcomingInterviews,
-          offersReceived: 0,
-          mockTestsTaken: 0,
+          offersReceived,
+          mockTestsTaken,
           eligibleDrives,
           applicationStats
         },

@@ -34,3 +34,8 @@ export const verifyStudent = async (id: string, body: { status: string; remarks?
   const { data } = await api.put(`/profile/students/${id}/verify`, body);
   return data;
 };
+
+export const blockStudent = async (id: string, isActive: boolean) => {
+  const { data } = await api.put(`/profile/students/${id}/block`, { isActive });
+  return data;
+};

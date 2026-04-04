@@ -96,7 +96,6 @@ const getNavItems = (role: string): { section: string; items: NavItem[] }[] => {
           section: 'OTHERS',
           items: [
             { label: 'Announcements', path: '/dashboard/announcements', icon: <AnnouncementIcon /> },
-            { label: 'Reports', path: '/dashboard/reports', icon: <AnalyticsIcon /> },
             { label: 'Profile', path: '/dashboard/profile', icon: <PersonIcon /> },
           ],
         },

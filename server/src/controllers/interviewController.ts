@@ -3,8 +3,28 @@ import Interview from '../models/Interview';
 import Application from '../models/Application';
 import Drive from '../models/Drive';
 import User from '../models/User';
-import { AuthRequest } from '../types';
+import Notification from '../models/Notification';
+import { AuthRequest, Role } from '../types';
 import { createError } from '../middlewares/errorHandler';
+import { emitToUser } from '../services/socketService';
+
+const notifyUser = async (
+    userId: string,
+    data: { title: string; message: string; type?: string; link?: string }
+) => {
+    try {
+        const notification = await Notification.create({
+            user: userId,
+            title: data.title,
+            message: data.message,
+            type: data.type || 'info',
+            link: data.link,
+        });
+        emitToUser(userId, 'new_notification', notification);
+    } catch (err) {
+        console.error(`[Notification] FAILED for ${userId}:`, err);
+    }
+};
 
 // GET /api/interviews
 export const getAllInterviews = async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
@@ -117,16 +137,32 @@ export const createInterview = async (req: AuthRequest, res: Response, next: Nex
         }
 
         // Real-time notification to the student
-        try {
-            const { sendUserNotification } = require('../services/socketService');
+        if (populated?.student) {
             const driveDoc = populated?.drive as any;
-            sendUserNotification(req.body.student, {
+            await notifyUser(populated.student._id.toString(), {
                 title: 'Interview Scheduled',
                 message: `An interview for ${driveDoc?.company?.name || driveDoc?.title} has been scheduled.`,
                 type: 'info',
                 link: '/dashboard/interviews'
             });
-        } catch (_) { /* socket not initialized */ }
+        }
+
+        // Notify other admins/officers
+        const adminsAndOfficers = await User.find({
+            role: { $in: [Role.ADMIN, Role.PLACEMENT_OFFICER] },
+            _id: { $ne: req.user?._id }
+        });
+        const creatorName = req.user?.name || 'An officer';
+        const driveDocNotify = populated?.drive as any;
+        const studentDoc = populated?.student as any;
+        for (const ad of adminsAndOfficers) {
+            await notifyUser(ad._id.toString(), {
+                title: 'Interview Scheduled',
+                message: `${creatorName} scheduled an interview for ${studentDoc?.name || 'a student'} — ${driveDocNotify?.company?.name || driveDocNotify?.title || 'a drive'}.`,
+                type: 'info',
+                link: '/dashboard/interviews'
+            });
+        }
 
         res.status(201).json({
             success: true,

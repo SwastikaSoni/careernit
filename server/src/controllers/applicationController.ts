@@ -2,8 +2,28 @@ import { Response, NextFunction } from 'express';
 import Application from '../models/Application';
 import Drive from '../models/Drive';
 import User from '../models/User';
+import Notification from '../models/Notification';
 import { AuthRequest, Role } from '../types';
 import { createError } from '../middlewares/errorHandler';
+import { emitToUser } from '../services/socketService';
+
+const notifyUser = async (
+    userId: string,
+    data: { title: string; message: string; type?: string; link?: string }
+) => {
+    try {
+        const notification = await Notification.create({
+            user: userId,
+            title: data.title,
+            message: data.message,
+            type: data.type || 'info',
+            link: data.link,
+        });
+        emitToUser(userId, 'new_notification', notification);
+    } catch (err) {
+        console.error(`[Notification] FAILED for ${userId}:`, err);
+    }
+};
 
 // GET /api/applications — Officer: list all applications with filters
 export const getAllApplications = async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
@@ -78,18 +98,16 @@ export const updateApplicationStatus = async (req: AuthRequest, res: Response, n
         }
 
         // Real-time notification to the student
-        try {
-            if (updated?.student && updated.drive) {
-                const { sendUserNotification } = require('../services/socketService');
-                const driveDoc = updated.drive as any;
-                sendUserNotification(updated.student._id.toString(), {
-                    title: `Application ${updated.status}`,
-                    message: `Your application for ${driveDoc.company?.name || driveDoc.title} is now ${updated.status}.`,
-                    type: updated.status === 'rejected' ? 'error' : updated.status === 'selected' ? 'success' : 'info',
-                    link: '/dashboard/my-applications'
-                });
-            }
-        } catch (_) { /* socket not initialized */ }
+        if (updated?.student && updated.drive) {
+            const driveDoc = updated.drive as any;
+            const companyName = driveDoc.company?.name || driveDoc.title;
+            await notifyUser(updated.student._id.toString(), {
+                title: `Application ${updated.status}`,
+                message: `Your application for ${companyName} is now ${updated.status}.`,
+                type: updated.status === 'rejected' ? 'error' : updated.status === 'selected' ? 'success' : 'info',
+                link: '/dashboard/my-applications'
+            });
+        }
 
         res.json({
             success: true,

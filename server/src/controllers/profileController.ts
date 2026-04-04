@@ -159,3 +159,25 @@ export const verifyStudent = async (req: AuthRequest, res: Response, next: NextF
     next(error);
   }
 };
+
+// PUT /api/profile/students/:id/block (Admin)
+export const blockStudent = async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const { isActive } = req.body;
+
+    const student = await User.findById(req.params.id);
+    if (!student || student.role !== Role.STUDENT) {
+      throw createError(404, 'Student not found');
+    }
+
+    student.isActive = isActive;
+    await student.save();
+
+    res.json({
+      success: true,
+      message: `Student account has been ${isActive ? 'unblocked' : 'blocked'} successfully`,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
