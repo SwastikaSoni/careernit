@@ -31,6 +31,7 @@ import {
   Assignment as TestIcon,
   AccountBalance as DeptIcon,
   BadgeOutlined as OfficerIcon,
+  RocketLaunch as RocketIcon,
 } from '@mui/icons-material';
 
 export const DRAWER_WIDTH = 260;
@@ -156,7 +157,7 @@ const SidebarContent = ({ onItemClick }: { onItemClick?: () => void }) => {
 
   const getRoleBadge = (role: string) => {
     switch (role) {
-      case 'admin': return 'Admin';
+      case 'admin': return 'Administrator';
       case 'placement_officer': return 'Placement Officer';
       case 'student': return 'Student';
       default: return role;
@@ -172,41 +173,54 @@ const SidebarContent = ({ onItemClick }: { onItemClick?: () => void }) => {
     <Box
       sx={{
         height: '100%',
-        background: 'linear-gradient(180deg, #3A3F7A 0%, #2B2D5E 50%, #1f1f45 100%)',
+        background: 'linear-gradient(160deg, #1a1a2e 0%, #16213e 40%, #0f3460 80%, #1a1a2e 100%)',
         color: '#FFFFFF',
         display: 'flex',
         flexDirection: 'column',
         overflowY: 'auto',
         overflowX: 'hidden',
+        position: 'relative',
         '&::-webkit-scrollbar': { width: '4px' },
-        '&::-webkit-scrollbar-thumb': { background: 'rgba(255,255,255,0.15)', borderRadius: '4px' },
+        '&::-webkit-scrollbar-thumb': { background: 'rgba(255,255,255,0.12)', borderRadius: '4px' },
       }}
     >
-      {/* Logo */}
-      <Box sx={{ px: 3, py: 2.5, display: 'flex', alignItems: 'center', gap: 1.5 }}>
+      {/* Decorative orbs to match login */}
+      <Box sx={{
+        position: 'absolute', width: 180, height: 180, borderRadius: '50%',
+        background: 'radial-gradient(circle, rgba(126,87,194,0.15) 0%, transparent 70%)',
+        top: -40, right: -60, pointerEvents: 'none',
+      }} />
+      <Box sx={{
+        position: 'absolute', width: 140, height: 140, borderRadius: '50%',
+        background: 'radial-gradient(circle, rgba(92,107,192,0.12) 0%, transparent 70%)',
+        bottom: 40, left: -40, pointerEvents: 'none',
+      }} />
+
+      {/* Logo — matches login branding */}
+      <Box sx={{ px: 3, py: 2.5, display: 'flex', alignItems: 'center', gap: 1.5, position: 'relative', zIndex: 1 }}>
         <Box sx={{
-          width: 38, height: 38, borderRadius: '10px',
+          width: 38, height: 38, borderRadius: '12px',
           background: 'linear-gradient(135deg, #7E57C2, #5C6BC0)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           boxShadow: '0 4px 15px rgba(126,87,194,0.4)',
         }}>
-          <SchoolIcon sx={{ fontSize: 22, color: '#fff' }} />
+          <RocketIcon sx={{ fontSize: 20, color: '#fff' }} />
         </Box>
-        <Typography variant="h6" sx={{ fontWeight: 800, letterSpacing: 0.5, fontSize: '1.15rem' }}>
+        <Typography variant="h6" sx={{ fontWeight: 800, letterSpacing: -0.3, fontSize: '1.15rem' }}>
           CareerNIT
         </Typography>
       </Box>
 
-      <Divider sx={{ borderColor: 'rgba(255,255,255,0.08)', mx: 2 }} />
+      <Divider sx={{ borderColor: 'rgba(255,255,255,0.06)', mx: 2 }} />
 
       {/* Navigation */}
-      <Box sx={{ flex: 1, px: 1.5, py: 1 }}>
+      <Box sx={{ flex: 1, px: 1.5, py: 1, position: 'relative', zIndex: 1 }}>
         {navSections.map((section) => (
           <Box key={section.section} sx={{ mb: 1 }}>
             <Typography
               variant="caption"
               sx={{
-                color: 'rgba(255,255,255,0.35)',
+                color: 'rgba(255,255,255,0.3)',
                 fontWeight: 700,
                 letterSpacing: 1.5,
                 px: 1.5,
@@ -227,16 +241,17 @@ const SidebarContent = ({ onItemClick }: { onItemClick?: () => void }) => {
                     mb: 0.3,
                     py: 1,
                     px: 1.5,
-                    color: isActive(item.path) ? '#FFFFFF' : 'rgba(255,255,255,0.6)',
+                    color: isActive(item.path) ? '#FFFFFF' : 'rgba(255,255,255,0.55)',
                     background: isActive(item.path)
-                      ? 'linear-gradient(135deg, rgba(126,87,194,0.3), rgba(92,107,192,0.25))'
+                      ? 'linear-gradient(135deg, rgba(126,87,194,0.25), rgba(92,107,192,0.2))'
                       : 'transparent',
                     backdropFilter: isActive(item.path) ? 'blur(10px)' : 'none',
-                    border: isActive(item.path) ? '1px solid rgba(179,157,219,0.2)' : '1px solid transparent',
+                    border: isActive(item.path) ? '1px solid rgba(179,157,219,0.15)' : '1px solid transparent',
+                    boxShadow: isActive(item.path) ? '0 2px 12px rgba(126,87,194,0.15)' : 'none',
                     '&:hover': {
                       background: isActive(item.path)
-                        ? 'linear-gradient(135deg, rgba(126,87,194,0.35), rgba(92,107,192,0.3))'
-                        : 'rgba(255,255,255,0.06)',
+                        ? 'linear-gradient(135deg, rgba(126,87,194,0.3), rgba(92,107,192,0.25))'
+                        : 'rgba(255,255,255,0.05)',
                       color: '#FFFFFF',
                     },
                     transition: 'all 0.2s ease',
@@ -244,7 +259,7 @@ const SidebarContent = ({ onItemClick }: { onItemClick?: () => void }) => {
                 >
                   <ListItemIcon
                     sx={{
-                      color: isActive(item.path) ? '#B39DDB' : 'rgba(255,255,255,0.45)',
+                      color: isActive(item.path) ? '#B39DDB' : 'rgba(255,255,255,0.4)',
                       minWidth: 38,
                       '& .MuiSvgIcon-root': { fontSize: 20 },
                     }}
@@ -272,12 +287,14 @@ const SidebarContent = ({ onItemClick }: { onItemClick?: () => void }) => {
           mx: 1.5,
           mb: 1.5,
           borderRadius: '14px',
-          background: 'rgba(255,255,255,0.06)',
+          background: 'rgba(255,255,255,0.05)',
           backdropFilter: 'blur(10px)',
-          border: '1px solid rgba(255,255,255,0.08)',
+          border: '1px solid rgba(255,255,255,0.06)',
           display: 'flex',
           alignItems: 'center',
           gap: 1.5,
+          position: 'relative',
+          zIndex: 1,
         }}
       >
         <Avatar
@@ -285,7 +302,7 @@ const SidebarContent = ({ onItemClick }: { onItemClick?: () => void }) => {
           sx={{
             width: 36,
             height: 36,
-            background: 'linear-gradient(135deg, #8594E8, #5C6BC0)',
+            background: 'linear-gradient(135deg, #7E57C2, #5C6BC0)',
             fontSize: '0.9rem',
             fontWeight: 700,
           }}
@@ -299,7 +316,7 @@ const SidebarContent = ({ onItemClick }: { onItemClick?: () => void }) => {
           >
             {user.name}
           </Typography>
-          <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.7rem' }}>
+          <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.45)', fontSize: '0.7rem' }}>
             {getRoleBadge(user.role)}
           </Typography>
         </Box>

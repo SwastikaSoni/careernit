@@ -19,17 +19,17 @@ const StatCard = ({ title, value, icon, gradient, navigateTo, subtitle }: StatCa
         borderRadius: '18px',
         overflow: 'hidden',
         height: '100%',
-        background: 'rgba(255,255,255,0.55)',
+        background: 'rgba(255,255,255,0.75)',
         backdropFilter: 'blur(16px)',
         WebkitBackdropFilter: 'blur(16px)',
-        border: '1px solid rgba(255,255,255,0.6)',
-        boxShadow: '0 4px 20px rgba(92,107,192,0.08)',
+        border: '1px solid rgba(226,232,240,0.8)',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(92,107,192,0.06)',
         transition: 'all 0.3s ease',
         '&:hover': {
           transform: 'translateY(-4px)',
-          boxShadow: '0 12px 40px rgba(92,107,192,0.15)',
-          background: 'rgba(255,255,255,0.7)',
-          border: '1px solid rgba(92,107,192,0.15)',
+          boxShadow: '0 8px 32px rgba(92,107,192,0.12)',
+          background: 'rgba(255,255,255,0.9)',
+          border: '1px solid rgba(92,107,192,0.12)',
         },
       }}
     >

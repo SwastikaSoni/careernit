@@ -18,17 +18,17 @@ const QuickActionCard = ({ title, description, icon, gradient, navigateTo }: Qui
         borderRadius: '18px',
         overflow: 'hidden',
         height: '100%',
-        background: 'rgba(255,255,255,0.4)',
+        background: 'rgba(255,255,255,0.65)',
         backdropFilter: 'blur(12px)',
         WebkitBackdropFilter: 'blur(12px)',
-        border: '1px solid rgba(255,255,255,0.5)',
-        boxShadow: 'none',
+        border: '1px solid rgba(226,232,240,0.7)',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.03)',
         transition: 'all 0.3s ease',
         '&:hover': {
           transform: 'translateY(-3px)',
-          boxShadow: '0 8px 30px rgba(92,107,192,0.12)',
-          background: 'rgba(255,255,255,0.6)',
-          border: '1px solid rgba(92,107,192,0.15)',
+          boxShadow: '0 6px 24px rgba(92,107,192,0.1)',
+          background: 'rgba(255,255,255,0.85)',
+          border: '1px solid rgba(92,107,192,0.12)',
         },
       }}
     >

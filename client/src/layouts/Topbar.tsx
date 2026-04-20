@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import {
   Box,
-  InputBase,
   Avatar,
   IconButton,
   Chip,
@@ -16,7 +15,6 @@ import {
   useTheme,
 } from '@mui/material';
 import {
-  Search as SearchIcon,
   NotificationsNoneOutlined as BellIcon,
   Person as PersonIcon,
   Logout as LogoutIcon,
@@ -94,10 +92,10 @@ const Topbar = ({ onMobileMenuToggle }: TopbarProps) => {
         left: isMobile ? 0 : DRAWER_WIDTH,
         right: 0,
         height: 64,
-        background: 'rgba(255, 255, 255, 0.55)',
+        background: 'rgba(248, 249, 252, 0.8)',
         backdropFilter: 'blur(20px)',
         WebkitBackdropFilter: 'blur(20px)',
-        borderBottom: '1px solid rgba(92,107,192,0.08)',
+        borderBottom: '1px solid rgba(92,107,192,0.06)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -111,34 +109,6 @@ const Topbar = ({ onMobileMenuToggle }: TopbarProps) => {
           <IconButton onClick={onMobileMenuToggle} sx={{ color: '#5C6BC0' }}>
             <MenuIcon />
           </IconButton>
-        )}
-
-        {!isSmall && (
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              background: 'rgba(92,107,192,0.06)',
-              border: '1px solid rgba(92,107,192,0.08)',
-              borderRadius: '14px',
-              px: 2,
-              py: 0.5,
-              width: { sm: 250, md: 350 },
-              maxWidth: '100%',
-              transition: 'all 0.3s',
-              '&:focus-within': {
-                background: 'rgba(92,107,192,0.1)',
-                border: '1px solid rgba(92,107,192,0.2)',
-                boxShadow: '0 2px 12px rgba(92,107,192,0.1)',
-              },
-            }}
-          >
-            <SearchIcon sx={{ color: '#9FA8DA', fontSize: 20, mr: 1 }} />
-            <InputBase
-              placeholder="Search..."
-              sx={{ flex: 1, fontSize: '0.9rem', color: '#333' }}
-            />
-          </Box>
         )}
       </Box>
 

@@ -22,51 +22,57 @@ const WelcomeBanner = ({ name, role, subtitle }: WelcomeBannerProps) => {
         p: { xs: 3, md: 4 },
         mb: 3,
         borderRadius: '20px',
-        background: 'linear-gradient(135deg, #5C6BC0 0%, #7E57C2 40%, #AB47BC 100%)',
+        background: 'linear-gradient(160deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #533483 100%)',
         color: '#FFFFFF',
         position: 'relative',
         overflow: 'hidden',
-        boxShadow: '0 8px 32px rgba(92,107,192,0.3)',
+        boxShadow: '0 8px 32px rgba(15,52,96,0.35)',
         '&:hover': {
           transform: 'none',
-          boxShadow: '0 10px 40px rgba(92,107,192,0.35)',
-          background: 'linear-gradient(135deg, #5C6BC0 0%, #7E57C2 40%, #AB47BC 100%)',
+          boxShadow: '0 10px 40px rgba(15,52,96,0.4)',
+          background: 'linear-gradient(160deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #533483 100%)',
           border: 'none'
         },
       }}
     >
-      {/* Decorative gradient orbs */}
+      {/* Decorative gradient orbs — matching login */}
       <Box
         sx={{
           position: 'absolute',
-          width: { xs: 150, md: 280 },
-          height: { xs: 150, md: 280 },
+          width: { xs: 180, md: 320 },
+          height: { xs: 180, md: 320 },
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 70%)',
-          top: -80,
-          right: -60,
+          background: 'radial-gradient(circle, rgba(126,87,194,0.25) 0%, transparent 70%)',
+          top: -100,
+          right: -80,
+          animation: 'bannerFloat 6s ease-in-out infinite',
+          '@keyframes bannerFloat': {
+            '0%,100%': { transform: 'translateY(0)' },
+            '50%': { transform: 'translateY(-15px)' },
+          },
         }}
       />
       <Box
         sx={{
           position: 'absolute',
-          width: { xs: 100, md: 180 },
-          height: { xs: 100, md: 180 },
+          width: { xs: 120, md: 200 },
+          height: { xs: 120, md: 200 },
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%)',
-          bottom: -50,
-          right: { xs: 30, md: 120 },
+          background: 'radial-gradient(circle, rgba(92,107,192,0.2) 0%, transparent 70%)',
+          bottom: -60,
+          right: { xs: 40, md: 150 },
+          animation: 'bannerFloat 8s ease-in-out infinite reverse',
         }}
       />
       <Box
         sx={{
           position: 'absolute',
-          width: 80,
-          height: 80,
+          width: 100,
+          height: 100,
           borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%)',
-          top: 30,
-          right: { xs: 120, md: 350 },
+          background: 'radial-gradient(circle, rgba(179,157,219,0.15) 0%, transparent 70%)',
+          top: 20,
+          right: { xs: 140, md: 380 },
         }}
       />
 
@@ -77,12 +83,15 @@ const WelcomeBanner = ({ name, role, subtitle }: WelcomeBannerProps) => {
             fontWeight: 900,
             mb: 0.5,
             fontSize: { xs: '1.5rem', sm: '2rem', md: '2.3rem' },
-            color: '#fff',
+            background: 'linear-gradient(135deg, #fff 30%, #B39DDB 100%)',
+            backgroundClip: 'text',
+            WebkitBackgroundClip: 'text',
+            color: 'transparent',
           }}
         >
           Welcome back, {name}
         </Typography>
-        <Typography variant="body1" sx={{ opacity: 0.85, fontSize: { xs: '0.85rem', md: '1rem' } }}>
+        <Typography variant="body1" sx={{ opacity: 0.7, fontSize: { xs: '0.85rem', md: '1rem' } }}>
           {subtitle || `${getRoleLabel(role)} Dashboard — CareerNIT Placement Management System`}
         </Typography>
       </Box>

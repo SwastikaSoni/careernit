@@ -29,11 +29,11 @@ const OfficerDashboard = ({ stats, userName }: OfficerDashboardProps) => {
     p: { xs: 2.5, md: 3 },
     borderRadius: '20px',
     height: '100%',
-    background: 'rgba(255,255,255,0.55)',
+    background: 'rgba(255,255,255,0.75)',
     backdropFilter: 'blur(16px)',
     WebkitBackdropFilter: 'blur(16px)',
-    border: '1px solid rgba(255,255,255,0.6)',
-    boxShadow: '0 4px 20px rgba(92,107,192,0.08)',
+    border: '1px solid rgba(226,232,240,0.8)',
+    boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(92,107,192,0.06)',
   };
 
   return (
