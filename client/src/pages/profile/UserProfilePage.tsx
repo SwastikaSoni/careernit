@@ -1,17 +1,23 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import {
-    Box, Card, Typography, TextField, Button, Grid, CircularProgress, InputAdornment, Avatar
+    Box, Card, Typography, TextField, Button, Grid, CircularProgress, InputAdornment, Avatar, IconButton
 } from '@mui/material';
-import { Person as PersonIcon, Email as EmailIcon, Phone as PhoneIcon, Save as SaveIcon } from '@mui/icons-material';
+import {
+    Person as PersonIcon, Email as EmailIcon, Phone as PhoneIcon, Save as SaveIcon,
+    CameraAlt as CameraIcon,
+} from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
-import { getMyProfile, updateMyProfile } from '../../services/profileService';
+import { getMyProfile, updateMyProfile, uploadAvatar } from '../../services/profileService';
 
 const UserProfilePage = () => {
     const { user, updateUser } = useAuth();
     const { enqueueSnackbar } = useSnackbar();
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
+    const [uploadingAvatar, setUploadingAvatar] = useState(false);
+    const [avatarUrl, setAvatarUrl] = useState('');
+    const avatarInputRef = useRef<HTMLInputElement>(null);
     const [form, setForm] = useState({
         name: '',
         phone: '',
@@ -25,6 +31,7 @@ const UserProfilePage = () => {
                     name: res.user.name || '',
                     phone: res.user.phone || '',
                 });
+                setAvatarUrl(res.user.avatar || '');
             } catch (error) {
                 console.error(error);
             } finally {
@@ -36,6 +43,33 @@ const UserProfilePage = () => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setForm({ ...form, [e.target.name]: e.target.value });
+    };
+
+    const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+        if (!allowedTypes.includes(file.type)) {
+            enqueueSnackbar('Only JPEG, PNG, WebP, or GIF images are allowed', { variant: 'error' });
+            return;
+        }
+        if (file.size > 2 * 1024 * 1024) {
+            enqueueSnackbar('Image must be less than 2MB', { variant: 'error' });
+            return;
+        }
+
+        setUploadingAvatar(true);
+        try {
+            const data = await uploadAvatar(file);
+            setAvatarUrl(data.avatar);
+            updateUser({ ...user!, avatar: data.avatar });
+            enqueueSnackbar('Profile picture updated!', { variant: 'success' });
+        } catch (err: any) {
+            enqueueSnackbar(err.response?.data?.message || 'Upload failed', { variant: 'error' });
+        } finally {
+            setUploadingAvatar(false);
+        }
     };
 
     const handleSave = async () => {
@@ -59,6 +93,8 @@ const UserProfilePage = () => {
         );
     }
 
+    const avatarSrc = avatarUrl ? `http://localhost:5000${avatarUrl}` : undefined;
+
     return (
         <Box sx={{ maxWidth: 800, mx: 'auto', mt: 4 }}>
             <Typography variant="h5" sx={{ fontWeight: 800, color: '#1A1A2E', mb: 3 }}>
@@ -67,9 +103,41 @@ const UserProfilePage = () => {
 
             <Card sx={{ p: { xs: 2.5, md: 4 }, borderRadius: '18px', display: 'flex', flexDirection: 'column', gap: 3 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 3, mb: 2 }}>
-                    <Avatar sx={{ width: 80, height: 80, background: 'linear-gradient(135deg, #5C6BC0, #7E57C2)', fontSize: '2rem' }}>
-                        {form.name ? form.name.charAt(0).toUpperCase() : 'A'}
-                    </Avatar>
+                    {/* Avatar with upload overlay */}
+                    <Box sx={{ position: 'relative', display: 'inline-block' }}>
+                        <Avatar
+                            src={avatarSrc}
+                            sx={{
+                                width: 80, height: 80,
+                                background: 'linear-gradient(135deg, #5C6BC0, #7E57C2)',
+                                fontSize: '2rem',
+                                border: '3px solid rgba(92,107,192,0.2)',
+                            }}
+                        >
+                            {!avatarSrc && (form.name ? form.name.charAt(0).toUpperCase() : 'A')}
+                        </Avatar>
+                        <IconButton
+                            onClick={() => avatarInputRef.current?.click()}
+                            disabled={uploadingAvatar}
+                            sx={{
+                                position: 'absolute', bottom: -4, right: -4,
+                                width: 32, height: 32,
+                                background: 'linear-gradient(135deg, #5C6BC0, #7E57C2)',
+                                color: '#fff',
+                                boxShadow: '0 2px 8px rgba(92,107,192,0.4)',
+                                '&:hover': { background: 'linear-gradient(135deg, #7E57C2, #5C6BC0)' },
+                            }}
+                        >
+                            {uploadingAvatar ? <CircularProgress size={16} sx={{ color: '#fff' }} /> : <CameraIcon sx={{ fontSize: 16 }} />}
+                        </IconButton>
+                        <input
+                            ref={avatarInputRef}
+                            type="file"
+                            accept="image/jpeg,image/png,image/webp,image/gif"
+                            hidden
+                            onChange={handleAvatarUpload}
+                        />
+                    </Box>
                     <Box>
                         <Typography variant="h6" sx={{ fontWeight: 700, color: '#1A1A2E' }}>
                             {user?.name}

@@ -281,6 +281,7 @@ const SidebarContent = ({ onItemClick }: { onItemClick?: () => void }) => {
         }}
       >
         <Avatar
+          src={user.avatar ? `http://localhost:5000${user.avatar}` : undefined}
           sx={{
             width: 36,
             height: 36,
@@ -289,7 +290,7 @@ const SidebarContent = ({ onItemClick }: { onItemClick?: () => void }) => {
             fontWeight: 700,
           }}
         >
-          {user.name?.charAt(0).toUpperCase()}
+          {!user.avatar && user.name?.charAt(0).toUpperCase()}
         </Avatar>
         <Box sx={{ overflow: 'hidden' }}>
           <Typography

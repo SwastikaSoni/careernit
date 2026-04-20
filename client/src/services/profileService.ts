@@ -19,6 +19,15 @@ export const uploadResume = async (file: File) => {
   return data;
 };
 
+export const uploadAvatar = async (file: File) => {
+  const formData = new FormData();
+  formData.append('avatar', file);
+  const { data } = await api.post('/profile/avatar', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+  return data;
+};
+
 export const getAllStudents = async (params?: Record<string, string>) => {
   const query = params ? '?' + new URLSearchParams(params).toString() : '';
   const { data } = await api.get(`/profile/students${query}`);

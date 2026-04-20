@@ -180,14 +180,21 @@ export const createOfficer = async (req: AuthRequest, res: Response, next: NextF
       throw createError(400, 'Email already registered.');
     }
 
-    const officer = await User.create({
+    const officerData: any = {
       name,
       email,
       password,
       phone,
       role: Role.PLACEMENT_OFFICER,
       ...(department && { department }),
-    });
+    };
+
+    // If avatar file was uploaded via multer
+    if (req.file) {
+      officerData.avatar = `/uploads/avatars/${req.file.filename}`;
+    }
+
+    const officer = await User.create(officerData);
 
     res.status(201).json({
       success: true,
@@ -197,6 +204,7 @@ export const createOfficer = async (req: AuthRequest, res: Response, next: NextF
         name: officer.name,
         email: officer.email,
         role: officer.role,
+        avatar: officer.avatar,
       },
     });
   } catch (error) {

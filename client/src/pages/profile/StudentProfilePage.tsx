@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import {
   Box,
@@ -11,8 +11,9 @@ import {
   Chip,
   Alert,
   CircularProgress,
-  Divider,
   InputAdornment,
+  Avatar,
+  IconButton,
 } from '@mui/material';
 import {
   Person as PersonIcon,
@@ -24,9 +25,10 @@ import {
   UploadFile as UploadIcon,
   Save as SaveIcon,
   Link as LinkIcon,
+  CameraAlt as CameraIcon,
 } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
-import { getMyProfile, updateMyProfile, uploadResume } from '../../services/profileService';
+import { getMyProfile, updateMyProfile, uploadResume, uploadAvatar } from '../../services/profileService';
 import { getAllDepartments } from '../../services/departmentService';
 
 const StudentProfilePage = () => {
@@ -54,6 +56,9 @@ const StudentProfilePage = () => {
     githubUrl: '',
   });
   const [resume, setResume] = useState('');
+  const [avatarUrl, setAvatarUrl] = useState('');
+  const [uploadingAvatar, setUploadingAvatar] = useState(false);
+  const avatarInputRef = useRef<HTMLInputElement>(null);
   const [verificationStatus, setVerificationStatus] = useState('pending');
   const [verificationRemarks, setVerificationRemarks] = useState('');
 
@@ -84,6 +89,7 @@ const StudentProfilePage = () => {
           githubUrl: u.githubUrl || '',
         });
         setResume(u.resume || '');
+        setAvatarUrl(u.avatar || '');
         setVerificationStatus(u.verificationStatus || 'pending');
         setVerificationRemarks(u.verificationRemarks || '');
         setDepartments(deptData.departments);
@@ -185,6 +191,71 @@ const StudentProfilePage = () => {
           Your profile is verified. Note: Editing academic fields (CGPA, marks, backlogs, department, batch) will require re-verification.
         </Alert>
       )}
+
+      {/* Profile Picture */}
+      <Card sx={{ p: { xs: 2.5, md: 3 }, mb: 3, borderRadius: '18px', display: 'flex', alignItems: 'center', gap: 3 }}>
+        <Box sx={{ position: 'relative', display: 'inline-block' }}>
+          <Avatar
+            src={avatarUrl ? `http://localhost:5000${avatarUrl}` : undefined}
+            sx={{
+              width: 80, height: 80,
+              background: 'linear-gradient(135deg, #5C6BC0, #7E57C2)',
+              fontSize: '2rem',
+              border: '3px solid rgba(92,107,192,0.2)',
+            }}
+          >
+            {!avatarUrl && (form.name ? form.name.charAt(0).toUpperCase() : 'S')}
+          </Avatar>
+          <IconButton
+            onClick={() => avatarInputRef.current?.click()}
+            disabled={uploadingAvatar}
+            sx={{
+              position: 'absolute', bottom: -4, right: -4,
+              width: 32, height: 32,
+              background: 'linear-gradient(135deg, #5C6BC0, #7E57C2)',
+              color: '#fff',
+              boxShadow: '0 2px 8px rgba(92,107,192,0.4)',
+              '&:hover': { background: 'linear-gradient(135deg, #7E57C2, #5C6BC0)' },
+            }}
+          >
+            {uploadingAvatar ? <CircularProgress size={16} sx={{ color: '#fff' }} /> : <CameraIcon sx={{ fontSize: 16 }} />}
+          </IconButton>
+          <input
+            ref={avatarInputRef}
+            type="file"
+            accept="image/jpeg,image/png,image/webp,image/gif"
+            hidden
+            onChange={async (e) => {
+              const file = e.target.files?.[0];
+              if (!file) return;
+              const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+              if (!allowedTypes.includes(file.type)) {
+                enqueueSnackbar('Only JPEG, PNG, WebP, or GIF images allowed', { variant: 'error' });
+                return;
+              }
+              if (file.size > 2 * 1024 * 1024) {
+                enqueueSnackbar('Image must be less than 2MB', { variant: 'error' });
+                return;
+              }
+              setUploadingAvatar(true);
+              try {
+                const data = await uploadAvatar(file);
+                setAvatarUrl(data.avatar);
+                updateUser({ ...user!, avatar: data.avatar });
+                enqueueSnackbar('Profile picture updated!', { variant: 'success' });
+              } catch (err: any) {
+                enqueueSnackbar(err.response?.data?.message || 'Upload failed', { variant: 'error' });
+              } finally {
+                setUploadingAvatar(false);
+              }
+            }}
+          />
+        </Box>
+        <Box>
+          <Typography variant="h6" sx={{ fontWeight: 700, color: '#1A1A2E' }}>{user?.name}</Typography>
+          <Typography variant="body2" sx={{ color: '#888' }}>{user?.email}</Typography>
+        </Box>
+      </Card>
 
       {/* Personal Information */}
       <Card sx={{ p: { xs: 2.5, md: 3 }, mb: 3, borderRadius: '18px' }}>

@@ -179,6 +179,7 @@ const Topbar = ({ onMobileMenuToggle }: TopbarProps) => {
           }}
         >
           <Avatar
+            src={user?.avatar ? `http://localhost:5000${user.avatar}` : undefined}
             sx={{
               width: 34,
               height: 34,
@@ -189,7 +190,7 @@ const Topbar = ({ onMobileMenuToggle }: TopbarProps) => {
               boxShadow: '0 2px 8px rgba(92,107,192,0.3)',
             }}
           >
-            {user?.name?.charAt(0).toUpperCase()}
+            {!user?.avatar && user?.name?.charAt(0).toUpperCase()}
           </Avatar>
           {!isSmall && (
             <Typography variant="body2" sx={{ fontWeight: 600, color: '#333' }}>

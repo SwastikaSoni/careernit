@@ -90,6 +90,28 @@ export const uploadResume = async (req: AuthRequest, res: Response, next: NextFu
   }
 };
 
+// POST /api/profile/avatar
+export const uploadAvatar = async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    if (!req.file) throw createError(400, 'No file uploaded');
+
+    const avatarPath = `/uploads/avatars/${req.file.filename}`;
+    const user = await User.findByIdAndUpdate(
+      req.user?._id,
+      { avatar: avatarPath },
+      { new: true }
+    ).select('-password');
+
+    res.json({
+      success: true,
+      message: 'Avatar uploaded successfully',
+      avatar: user?.avatar,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // GET /api/profile/students (Admin - all students)
 export const getAllStudents = async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
   try {

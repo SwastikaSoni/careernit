@@ -5,6 +5,7 @@ import {
   getMyProfile,
   updateMyProfile,
   uploadResume,
+  uploadAvatar,
   getAllStudents,
   getStudentById,
   verifyStudent,
@@ -18,7 +19,7 @@ import { Role } from '../types';
 const router = Router();
 
 // Multer config for resume uploads
-const storage = multer.diskStorage({
+const resumeStorage = multer.diskStorage({
   destination: (_req, _file, cb) => {
     cb(null, path.join(__dirname, '../../uploads/resumes'));
   },
@@ -28,8 +29,8 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({
-  storage,
+const resumeUpload = multer({
+  storage: resumeStorage,
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
   fileFilter: (_req, file, cb) => {
     if (file.mimetype === 'application/pdf') {
@@ -40,10 +41,35 @@ const upload = multer({
   },
 });
 
+// Multer config for avatar uploads
+const avatarStorage = multer.diskStorage({
+  destination: (_req, _file, cb) => {
+    cb(null, path.join(__dirname, '../../uploads/avatars'));
+  },
+  filename: (_req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    cb(null, uniqueSuffix + path.extname(file.originalname));
+  },
+});
+
+const avatarUpload = multer({
+  storage: avatarStorage,
+  limits: { fileSize: 2 * 1024 * 1024 }, // 2MB
+  fileFilter: (_req, file, cb) => {
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+    if (allowedTypes.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error('Only JPEG, PNG, WebP, and GIF images are allowed'));
+    }
+  },
+});
+
 // Student profile routes
 router.get('/me', authenticate, getMyProfile);
 router.put('/me', authenticate, validate(updateProfileSchema), updateMyProfile);
-router.post('/resume', authenticate, authorize(Role.STUDENT), upload.single('resume'), uploadResume);
+router.post('/resume', authenticate, authorize(Role.STUDENT), resumeUpload.single('resume'), uploadResume);
+router.post('/avatar', authenticate, avatarUpload.single('avatar'), uploadAvatar);
 
 // Admin routes
 router.get('/students', authenticate, authorize(Role.ADMIN, Role.PLACEMENT_OFFICER), getAllStudents);

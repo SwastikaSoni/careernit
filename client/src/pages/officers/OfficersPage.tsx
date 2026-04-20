@@ -23,6 +23,7 @@ import {
   Tooltip,
   MenuItem,
   Grid,
+  Avatar,
 } from '@mui/material';
 import {
   Add as AddIcon,
@@ -35,6 +36,7 @@ import {
   Email as EmailIcon,
   Lock as LockIcon,
   Phone as PhoneIcon,
+  CameraAlt as CameraIcon,
 } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
 import { getAllOfficers, createOfficer, toggleOfficerStatus, deleteOfficer } from '../../services/officerService';
@@ -45,6 +47,7 @@ interface Officer {
   name: string;
   email: string;
   phone?: string;
+  avatar?: string;
   department?: { _id: string; name: string; code: string };
   isActive: boolean;
   createdAt: string;
@@ -59,6 +62,8 @@ const OfficersPage = () => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [deletingOfficer, setDeletingOfficer] = useState<Officer | null>(null);
   const [form, setForm] = useState({ name: '', email: '', password: '', phone: '', department: '' });
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState('');
   const [formError, setFormError] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
@@ -91,10 +96,13 @@ const OfficersPage = () => {
         password: form.password,
         phone: form.phone || undefined,
         department: form.department || undefined,
+        avatar: avatarFile || undefined,
       });
       enqueueSnackbar('Placement Officer created successfully', { variant: 'success' });
       setDialogOpen(false);
       setForm({ name: '', email: '', password: '', phone: '', department: '' });
+      setAvatarFile(null);
+      setAvatarPreview('');
       fetchData();
     } catch (err: any) {
       setFormError(err.response?.data?.message || 'Failed to create officer');
@@ -138,7 +146,7 @@ const OfficersPage = () => {
     <Box>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3, flexWrap: 'wrap', gap: 2 }}>
         <Typography variant="h5" sx={{ fontWeight: 800, color: '#1A1A2E' }}>Placement Officers</Typography>
-        <Button variant="contained" startIcon={<AddIcon />} onClick={() => { setForm({ name: '', email: '', password: '', phone: '', department: '' }); setFormError(''); setDialogOpen(true); }}
+        <Button variant="contained" startIcon={<AddIcon />} onClick={() => { setForm({ name: '', email: '', password: '', phone: '', department: '' }); setAvatarFile(null); setAvatarPreview(''); setFormError(''); setDialogOpen(true); }}
           sx={{ background: 'linear-gradient(135deg, #5C6BC0, #7E57C2)', '&:hover': { background: 'linear-gradient(135deg, #7E57C2, #9575CD)' } }}>
           Add Officer
         </Button>
@@ -172,8 +180,18 @@ const OfficersPage = () => {
                 {filtered.map((o) => (
                   <TableRow key={o._id}>
                     <TableCell>
-                      <Typography variant="body2" sx={{ fontWeight: 600 }}>{o.name}</Typography>
-                      <Typography variant="caption" sx={{ color: '#999', display: { sm: 'none' } }}>{o.email}</Typography>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                        <Avatar
+                          src={o.avatar ? `http://localhost:5000${o.avatar}` : undefined}
+                          sx={{ width: 32, height: 32, background: 'linear-gradient(135deg, #5C6BC0, #7E57C2)', fontSize: '0.85rem', fontWeight: 700 }}
+                        >
+                          {!o.avatar && o.name?.charAt(0).toUpperCase()}
+                        </Avatar>
+                        <Box>
+                          <Typography variant="body2" sx={{ fontWeight: 600 }}>{o.name}</Typography>
+                          <Typography variant="caption" sx={{ color: '#999', display: { sm: 'none' } }}>{o.email}</Typography>
+                        </Box>
+                      </Box>
                     </TableCell>
                     <TableCell sx={{ display: { xs: 'none', sm: 'table-cell' } }}>{o.email}</TableCell>
                     <TableCell sx={{ display: { xs: 'none', md: 'table-cell' } }}>
@@ -210,6 +228,47 @@ const OfficersPage = () => {
         <DialogTitle sx={{ fontWeight: 700 }}>Add Placement Officer</DialogTitle>
         <DialogContent>
           {formError && <Alert severity="error" sx={{ mb: 2, mt: 1, borderRadius: '12px' }}>{formError}</Alert>}
+          {/* Avatar Upload */}
+          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 1, mb: 2 }}>
+            <Box sx={{ position: 'relative', display: 'inline-block' }}>
+              <Avatar
+                src={avatarPreview || undefined}
+                sx={{
+                  width: 80, height: 80,
+                  background: 'linear-gradient(135deg, #5C6BC0, #7E57C2)',
+                  fontSize: '2rem',
+                  border: '3px solid rgba(92,107,192,0.2)',
+                }}
+              >
+                {!avatarPreview && (form.name ? form.name.charAt(0).toUpperCase() : <PersonIcon sx={{ fontSize: 36 }} />)}
+              </Avatar>
+              <IconButton
+                component="label"
+                sx={{
+                  position: 'absolute', bottom: -4, right: -4,
+                  width: 32, height: 32,
+                  background: 'linear-gradient(135deg, #5C6BC0, #7E57C2)',
+                  color: '#fff',
+                  boxShadow: '0 2px 8px rgba(92,107,192,0.4)',
+                  '&:hover': { background: 'linear-gradient(135deg, #7E57C2, #5C6BC0)' },
+                }}
+              >
+                <CameraIcon sx={{ fontSize: 16 }} />
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp,image/gif"
+                  hidden
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      setAvatarFile(file);
+                      setAvatarPreview(URL.createObjectURL(file));
+                    }
+                  }}
+                />
+              </IconButton>
+            </Box>
+          </Box>
           <Grid container spacing={2} sx={{ mt: 0.5 }}>
             <Grid size={{ xs: 12 }}>
               <TextField fullWidth label="Full Name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required
