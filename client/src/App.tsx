@@ -8,6 +8,7 @@ import ProtectedRoute from './routes/ProtectedRoute';
 import DashboardLayout from './layouts/DashboardLayout';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import ContactUs from './pages/ContactUs';
 import DashboardHome from './pages/DashboardHome';
 import Placeholder from './pages/Placeholder';
 import DepartmentList from './pages/departments/DepartmentList';
@@ -80,6 +81,7 @@ const App = () => {
                 {/* Public Routes */}
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/contact" element={<ContactUs />} />
 
                 {/* Protected Dashboard Routes */}
                 <Route

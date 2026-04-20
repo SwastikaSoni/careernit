@@ -28,6 +28,8 @@ export interface IUser extends Document {
   verificationRemarks?: string;
   placementStatus?: 'unplaced' | 'placed';
   placedCompany?: mongoose.Types.ObjectId;
+  resetOtp?: string;
+  resetOtpExpiry?: Date;
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -69,6 +71,8 @@ const userSchema = new Schema<IUser>(
       default: 'unplaced',
     },
     placedCompany: { type: Schema.Types.ObjectId, ref: 'Company' },
+    resetOtp: { type: String },
+    resetOtpExpiry: { type: Date },
     isActive: { type: Boolean, default: true },
   },
   { timestamps: true }

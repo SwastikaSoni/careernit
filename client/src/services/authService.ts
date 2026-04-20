@@ -24,3 +24,18 @@ export const changePassword = async (currentPassword: string, newPassword: strin
   const { data } = await api.post('/auth/change-password', { currentPassword, newPassword });
   return data;
 };
+
+export const forgotPassword = async (email: string) => {
+  const { data } = await api.post('/auth/forgot-password', { email });
+  return data;
+};
+
+export const verifyOtp = async (email: string, otp: string) => {
+  const { data } = await api.post('/auth/verify-otp', { email, otp });
+  return data;
+};
+
+export const resetPassword = async (resetToken: string, newPassword: string) => {
+  const { data } = await api.post('/auth/reset-password', { resetToken, newPassword });
+  return data;
+};

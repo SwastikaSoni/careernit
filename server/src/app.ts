@@ -19,6 +19,7 @@ import mockTestRoutes from './routes/mockTestRoutes';
 import announcementRoutes from './routes/announcementRoutes';
 import notificationRoutes from './routes/notificationRoutes';
 import offerRoutes from './routes/offerRoutes';
+import contactRoutes from './routes/contactRoutes';
 import errorHandler from './middlewares/errorHandler';
 
 dotenv.config();
@@ -51,6 +52,7 @@ app.use('/api/mock-tests', mockTestRoutes);
 app.use('/api/announcements', announcementRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/offers', offerRoutes);
+app.use('/api/contact', contactRoutes);
 app.use(errorHandler);
 
 export default app;
