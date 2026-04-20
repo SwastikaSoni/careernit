@@ -17,6 +17,7 @@ const QuickActionCard = ({ title, description, icon, gradient, navigateTo }: Qui
       sx={{
         borderRadius: '18px',
         overflow: 'hidden',
+        height: '100%',
         background: 'rgba(255,255,255,0.4)',
         backdropFilter: 'blur(12px)',
         WebkitBackdropFilter: 'blur(12px)',
@@ -34,13 +35,15 @@ const QuickActionCard = ({ title, description, icon, gradient, navigateTo }: Qui
       <CardActionArea
         onClick={() => navigate(navigateTo)}
         sx={{
-          p: { xs: 2.5, md: 3 },
+          p: { xs: 2, md: 2.5 },
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          justifyContent: 'center',
           textAlign: 'center',
-          gap: 1.5,
-          minHeight: 140,
+          gap: 1,
+          height: '100%',
+          minHeight: 130,
         }}
       >
         <Box

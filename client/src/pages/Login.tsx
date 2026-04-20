@@ -24,12 +24,12 @@ import {
   Visibility,
   VisibilityOff,
   RocketLaunch as RocketIcon,
-  TrendingUp as GrowthIcon,
-  Business as CompanyIcon,
-  Groups as GroupsIcon,
   Close as CloseIcon,
   CheckCircleOutline as SuccessIcon,
   ContactSupport as ContactIcon,
+  WorkOutline as WorkIcon,
+  TimelineOutlined as TimelineIcon,
+  NotificationsActiveOutlined as NotifIcon,
 } from '@mui/icons-material';
 
 const OTP_LENGTH = 6;
@@ -234,27 +234,34 @@ const Login = () => {
             NIT Warangal's official placement portal
           </Typography>
 
-          {/* Stats */}
-          <Box sx={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
+          {/* Feature highlights */}
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
             {[
-              { icon: <CompanyIcon />, label: '200+', sub: 'Companies' },
-              { icon: <GroupsIcon />, label: '95%', sub: 'Placed' },
-              { icon: <GrowthIcon />, label: '₹42L', sub: 'Highest CTC' },
-            ].map((stat, i) => (
+              { icon: <WorkIcon sx={{ fontSize: 20 }} />, text: 'Seamless placement drives' },
+              { icon: <TimelineIcon sx={{ fontSize: 20 }} />, text: 'Track your application journey' },
+              { icon: <NotifIcon sx={{ fontSize: 20 }} />, text: 'Real-time notifications' },
+            ].map((item, i) => (
               <Box key={i} sx={{
                 display: 'flex', alignItems: 'center', gap: 1.5,
-                p: 2, borderRadius: '16px',
-                background: 'rgba(255,255,255,0.06)',
-                backdropFilter: 'blur(10px)',
+                py: 1.2, px: 2, borderRadius: '14px',
+                background: 'rgba(255,255,255,0.08)',
                 border: '1px solid rgba(255,255,255,0.1)',
-                transition: 'all 0.3s',
-                '&:hover': { background: 'rgba(255,255,255,0.12)', transform: 'translateY(-2px)' },
+                backdropFilter: 'blur(6px)',
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  background: 'rgba(255,255,255,0.15)',
+                  transform: 'translateX(6px)',
+                },
               }}>
-                <Box sx={{ color: '#B39DDB' }}>{stat.icon}</Box>
-                <Box>
-                  <Typography sx={{ fontWeight: 800, fontSize: '1.2rem', lineHeight: 1 }}>{stat.label}</Typography>
-                  <Typography sx={{ fontSize: '0.75rem', opacity: 0.6 }}>{stat.sub}</Typography>
+                <Box sx={{
+                  width: 34, height: 34, borderRadius: '10px',
+                  background: 'rgba(255,255,255,0.12)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  color: '#B39DDB',
+                }}>
+                  {item.icon}
                 </Box>
+                <Typography sx={{ fontWeight: 500, fontSize: '0.92rem' }}>{item.text}</Typography>
               </Box>
             ))}
           </Box>

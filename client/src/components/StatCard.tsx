@@ -18,6 +18,7 @@ const StatCard = ({ title, value, icon, gradient, navigateTo, subtitle }: StatCa
       sx={{
         borderRadius: '18px',
         overflow: 'hidden',
+        height: '100%',
         background: 'rgba(255,255,255,0.55)',
         backdropFilter: 'blur(16px)',
         WebkitBackdropFilter: 'blur(16px)',
